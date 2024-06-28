@@ -32,8 +32,8 @@ const user = sequelize.define('user', {
     }
 }, {
     defaultScope: {
-        // 검색 결과에서 'password'는 제외
-        attributes: { exclude: ['password'] }
+        // 검색 결과에서 'password'는 제외... 를 하면 안됐었음..
+        // attributes: { exclude: ['password'] }
     }
 });
 
