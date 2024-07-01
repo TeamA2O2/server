@@ -12,14 +12,14 @@ async function checkDuplicatedId(req, res) {
 
         if (result) {
             console.log('아이디 중복');
-            return res.status(409).json({ result: '중복된 아이디입니다.' });
+            return res.status(409).json({ message: '중복된 아이디입니다.' });
         }
         console.log('아이디 중복 아님');
-        return res.status(200).json({ result: '사용 가능한 아이디 입니다.' });
+        return res.status(200).json({ message: '사용 가능한 아이디 입니다.' });
         
     } catch (err) {
         console.log('아이디 중복확인 중 오류 발생', err);
-        return res.status(500).json({ result: '아이디 중복확인 중 오류 발생' })
+        return res.status(500).json({ message: '아이디 중복확인 중 오류 발생' })
     }
 }
 
@@ -33,7 +33,7 @@ async function signUp(req, res) {
 
         if (findId) {
             console.log(id, ' 은/는 이미 사용중인 아이디 입니다.');
-            return res.status(409).json({ result: '이미 사용중인 아이디입니다.' });
+            return res.status(409).json({ message: '이미 사용중인 아이디입니다.' });
         }
 
         const { hashedPassword, salt } = await createHashedPassword(password);
@@ -48,11 +48,11 @@ async function signUp(req, res) {
             salt: salt,
         });
         console.log('회원가입 성공!');
-        return res.status(201).json({ result: '회원가입 성공' });
+        return res.status(201).json({ message: '회원가입 성공' });
 
     } catch (err) {
         console.log('회원가입 중 오류 발생 : ', err);
-        return res.status(500).json({ result: '회원가입 중 오류 발생' });
+        return res.status(500).json({ message: '회원가입 중 오류 발생' });
     }
 };
 
@@ -66,7 +66,7 @@ async function signIn(req, res) {
 
         if (!findId) {
             console.log(id, ' 은/는 존재하지 않는 아이디 입니다.');
-            return res.status(404).json({ result: '존재하지 않는 아이디입니다.' }); 
+            return res.status(404).json({ message: '존재하지 않는 아이디입니다.' }); 
         }
 
         console.log(password, findId.salt, findId.password)
@@ -74,8 +74,8 @@ async function signIn(req, res) {
         if (!result) {
             console.log('비밀번호 불일치');
             return res.status(401).json({ 
-                result: '비밀번호가 일치하지 않습니다', 
-                result: {
+                message: '비밀번호가 일치하지 않습니다', 
+                message: {
                     id: findId.id,
                     email: findId.email,
                     phone: findId.phone,
@@ -85,11 +85,11 @@ async function signIn(req, res) {
             });
         }
         console.log('로그인 성공!');
-        return res.status(200).json({ result: '로그인에 성공하였습니다! '});
+        return res.status(200).json({ message: '로그인에 성공하였습니다! '});
 
     } catch(err) {
         console.log('로그인 중 오류 발생', err);
-        return res.status(500).json({ result: '로그인 중 오류 발생' })
+        return res.status(500).json({ message: '로그인 중 오류 발생' })
     }
 }
 
