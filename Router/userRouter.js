@@ -7,6 +7,8 @@ router.get('/', (req, res, next) => {
     console.log("default endpoint");
 });
 
+router.get('/checkDuplicatedId/:id', userController.checkDuplicatedId);
+
 router.post('/signIn', userController.signIn);
 router.post('/signUp', userController.signUp);
 
