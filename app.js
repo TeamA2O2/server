@@ -56,7 +56,7 @@ app.use("/api-docs",
   swaggerUi.setup(specs)
 );
 app.use('/user', require('./Router/userRouter.js'));
-
+app.use('/funding', require('./Router/fundingRouter.js'));
 
 
 

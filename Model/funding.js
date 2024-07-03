@@ -5,13 +5,14 @@ const funding = sequelize.define('funding', {
 	id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+		autoIncrement: true,
         primaryKey: true,
     },
 	title: {
         type: Sequelize.STRING,
         allowNull: false,
     },
-	itme: {
+	item: {
         type: Sequelize.STRING,
         allowNull: false,
     },
@@ -29,7 +30,7 @@ const funding = sequelize.define('funding', {
     },
 	image: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     }
 });
 
