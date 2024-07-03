@@ -35,4 +35,4 @@ const funding = sequelize.define('funding', {
 
 sequelize.sync();
 
-module.exports = user;
+module.exports = funding;
