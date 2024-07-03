@@ -17,6 +17,13 @@
     "mysql2": "^3.10.1",
     "nodemon": "^3.1.4",
     "sequelize": "^6.37.3",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "swagger": "^0.7.5",
+	"swagger-jsdoc": "^6.2.8",
+	"swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }
