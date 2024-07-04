@@ -4,7 +4,7 @@ const router = express.Router();
 const userController = require('../Service/userService.js');
 
 router.get('/', (req, res, next) => {
-    console.log("default endpoint");
+	console.log('default endpoint');
 });
 
 router.get('/checkDuplicatedId/:id', userController.checkDuplicatedId);
