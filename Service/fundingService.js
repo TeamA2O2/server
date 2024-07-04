@@ -24,29 +24,63 @@ async function createFunding(req, res) {
 	}
 }
 
-
 // 펀딩 리스트 조회
 async function viewListFunding(req, res) {
 	const { userId } = req.body; // 요청 바디에서 userId 추출
 
 	try {
-        // 요청 바디에서 userId가 없는 경우 처리
-        if (!userId) {
-            return res.status(400).json({ error: 'request body에 userId가 없습니다.' });
-        }
+		// 요청 바디에서 userId가 없는 경우 처리
+		if (!userId) {
+			return res.status(400).json({ error: 'request body에 userId가 없습니다.' });
+		}
 
-        const findList = await funding.findAll({
+		const findList = await funding.findAll({
 			where: { userId: userId },
-			attributes: ['title', 'item', 'money', 'price'] 	// 필요한 속성만 선택
+			attributes: ['id', 'title', 'item', 'money', 'price'], // 필요한 속성만 선택
 		});
+		
+		// 펀딩 게시글이 존재하지 않는 경우 처리
+		if (findList.length === 0) {
+			console.log('사용자가 펀딩을 생성하지 않았습니다.');
+			return res.status(204).json();
+		}
 
-        console.log('펀딩 리스트 조회');
-        res.status(200).json(findList);
-    } catch (err) {
-        console.error('펀딩 리스트 조회 실패:', err);
-        res.status(500).json({ error: '펀딩 리스트 조회 실패' });
-    }
+		console.log('펀딩 리스트 조회');
+		res.status(200).json(findList);
+	} catch (err) {
+		console.error('펀딩 리스트 조회 실패:', err);
+		res.status(500).json({ error: '펀딩 리스트 조회 실패' });
+	}
+}
+
+// 펀딩 조회
+async function viewFunding(req, res) {
+	const { id } = req.body; // 요청 바디에서 id 추출
+
+	try {
+		// 요청 바디에서 id가 없는 경우 처리
+		if (!id) {
+			return res.status(400).json({ error: 'request body에 id가 없습니다.' });
+		}
+
+		const findFunding = await funding.findAll({
+			where: { id: id },
+		});
+		
+		// 펀딩 게시글이 존재하지 않는 경우 처리
+		if (findFunding.length === 0) {
+			console.log('펀딩 미존재');
+			return res.status(404).json({ error: '존재하지 않는 펀딩입니다.' });
+		}
+
+		console.log('펀딩 조회');
+		res.status(200).json(findFunding);
+	} catch (err) {
+		console.error('펀딩 조회 실패:', err);
+		res.status(500).json({ error: '펀딩 조회 실패' });
+	}
 }
 
 exports.createFunding = (req, res, next) => createFunding(req, res);
 exports.viewListFunding = (req, res, next) => viewListFunding(req, res);
+exports.viewFunding = (req, res, next) => viewFunding(req, res);
