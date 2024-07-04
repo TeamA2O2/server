@@ -25,7 +25,7 @@ router.get('/', (req, res, next) => {
  *              properties:
  *                  title:
  *                      type: string
- *                      example: '선물주세요'
+ *                      example: '선물 주세요'
  *                  item:
  *                      type: string
  *                      example: '갤럭시 노트북'
@@ -48,5 +48,51 @@ router.get('/', (req, res, next) => {
  *          description: 펀딩 생성 실패
  */
 router.post('/create', fundingController.createFunding);
+
+/**
+ * @swagger
+ *  /funding/viewList:
+ *    get:
+ *      tags: [펀딩]
+ *      summary: 펀딩 리스트 조회 API
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *        - in: "body"
+ *          name: "body"
+ *          description: "사용자 정보 입력"
+ *          required: true
+ *          schema:
+ *              type: object
+ *              properties:                 
+ *                  userId:
+ *                      type: string
+ *                      example: 'testid2'
+ *      responses:
+ *        200:
+ *          description: 성공적으로 펀딩 리스트를 조회한 경우
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: array
+ *                items:
+ *                  type: object
+ *                  properties:
+ *                      title:
+ *                          type: string
+ *                          example: '선물 주세요'
+ *                      price:
+ *                          type: number
+ *                          example: 2300000
+ *                      money:
+ *                          type: number
+ *                          example: 50000
+ *        400:
+ *          description: 요청 바디에서 필수 필드인 userId가 없는 경우
+ *        500:
+ *          description: 펀딩 리스트 조회 실패
+ */
+
+router.get('/viewList', fundingController.viewListFunding);
 
 module.exports = router;
