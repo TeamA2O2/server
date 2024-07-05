@@ -49,6 +49,7 @@ router.get('/', (req, res, next) => {
  */
 router.post('/create', fundingController.createFunding);
 
+
 /**
  * @swagger
  *  /funding/viewList:
@@ -163,5 +164,39 @@ router.get('/viewList', fundingController.viewListFunding);
  *          description: 펀딩 조회 실패
  */
 router.get('/view', fundingController.viewFunding);
+
+
+/**
+ * @swagger
+ *  /funding/delete:
+ *    post:
+ *      tags: [펀딩]
+ *      summary: 펀딩 삭제 API
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *        - in: "body"
+ *          name: "body"
+ *          description: "펀딩 번호 입력"
+ *          required: true
+ *          schema:
+ *              type: object
+ *              properties:                 
+ *                  id:
+ *                      type: number
+ *                      example: 1
+ *      responses:
+ *        200:
+ *          description: 펀딩 삭제 성공
+ *        400:
+ *          description: 요청 바디에서 필수 필드인 userId가 없는 경우
+ *        404:
+ *          description: 해당 펀딩이 존재하지 않는 경우
+ *        500:
+ *          description: 펀딩 삭제 실패
+ */
+router.get('/delete', fundingController.deleteFunding);
+
+//router.post('/update', fundingController.updateFunding);
 
 module.exports = router;

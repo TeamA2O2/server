@@ -17,7 +17,7 @@ async function createFunding(req, res) {
 		});
 
 		console.log('펀딩 생성');
-		res.status(201).json(newFunding);
+		res.status(201).json({ message: '펀딩 생성' });
 	} catch (err) {
 		console.error('펀딩 생성 실패:', err);
 		res.status(500).json({ error: '펀딩 생성 실패' });
@@ -53,7 +53,7 @@ async function viewListFunding(req, res) {
 	}
 }
 
-// 펀딩 조회
+// 특정 펀딩 조회
 async function viewFunding(req, res) {
 	const { id } = req.body; // 요청 바디에서 id 추출
 
@@ -81,6 +81,68 @@ async function viewFunding(req, res) {
 	}
 }
 
+/*
+// 펀딩 수정
+async function updateFunding(req, res) {
+	try {
+		const { id } = req.body; // 요청 바디에서 id 추출
+
+		const newFunding = await Funding.findByPk(id);
+		
+		if (!newFunding) {
+		  return res.status(404).json({ error: 'Funding not found' });
+		}
+
+		// 펀딩 정보 업데이트
+		newFunding.title = title;
+		newFunding.item = item;
+		newFunding.price = price;
+		newFunding.deadline = deadline;
+		newFunding.image = image;
+
+		await newFunding.save();
+		
+		console.log('펀딩 수정');
+		res.status(201).json(newFunding);
+	} catch (err) {
+		console.error('펀딩 수정 실패:', err);
+		res.status(500).json({ error: '펀딩 수정 실패' });
+	}
+}
+*/
+
+// 특정 펀딩 삭제
+async function deleteFunding(req, res) {
+	const { id } = req.body; // 요청 바디에서 id 추출
+
+	try {
+		// 요청 바디에서 id가 없는 경우 처리
+		if (!id) {
+			return res.status(400).json({ error: 'request body에 id가 없습니다.' });
+		}
+
+		const findFunding = await funding.findOne({
+			where: { id: id },
+		});
+		
+		// 펀딩 게시글이 존재하지 않는 경우 처리
+		if (!findFunding) {
+			console.log('펀딩 미존재');
+			return res.status(404).json({ error: '존재하지 않는 펀딩입니다.' });
+		}
+		
+		await findFunding.destroy();
+		
+		console.log('펀딩 삭제');
+		res.status(200).json({ message: '펀딩 삭제' });
+	} catch (err) {
+		console.error('펀딩 삭제 실패:', err);
+		res.status(500).json({ error: '펀딩 삭제 실패' });
+	}
+}
+
+
 exports.createFunding = (req, res, next) => createFunding(req, res);
 exports.viewListFunding = (req, res, next) => viewListFunding(req, res);
 exports.viewFunding = (req, res, next) => viewFunding(req, res);
+exports.deleteFunding = (req, res, next) => deleteFunding(req, res);
