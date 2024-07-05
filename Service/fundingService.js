@@ -38,7 +38,7 @@ async function viewListFunding(req, res) {
 			where: { userId: userId },
 			attributes: ['id', 'title', 'item', 'money', 'price'], // 필요한 속성만 선택
 		});
-		
+
 		// 펀딩 게시글이 존재하지 않는 경우 처리
 		if (findList.length === 0) {
 			console.log('사용자가 펀딩을 생성하지 않았습니다.');
@@ -66,7 +66,7 @@ async function viewFunding(req, res) {
 		const findFunding = await funding.findAll({
 			where: { id: id },
 		});
-		
+
 		// 펀딩 게시글이 존재하지 않는 경우 처리
 		if (findFunding.length === 0) {
 			console.log('펀딩 미존재');
@@ -81,35 +81,41 @@ async function viewFunding(req, res) {
 	}
 }
 
-/*
-// 펀딩 수정
+// 특정 펀딩 수정
 async function updateFunding(req, res) {
 	try {
-		const { id } = req.body; // 요청 바디에서 id 추출
+		const { id, title, item, price, deadline, image } = req.body;
 
-		const newFunding = await Funding.findByPk(id);
+		// 요청 바디에서 id가 없는 경우 처리
+		if (!id) {
+			return res.status(400).json({ error: 'request body에 id가 없습니다.' });
+		}
 		
+		const newFunding = await funding.findOne({
+			where: { id: id },
+		});
+
 		if (!newFunding) {
-		  return res.status(404).json({ error: 'Funding not found' });
+			console.log('펀딩 미존재');
+			return res.status(404).json({ error: '존재하지 않는 펀딩입니다.' });
 		}
 
 		// 펀딩 정보 업데이트
-		newFunding.title = title;
-		newFunding.item = item;
-		newFunding.price = price;
-		newFunding.deadline = deadline;
-		newFunding.image = image;
+		newFunding.title = title ? title : newFunding.title;
+		newFunding.item = item ? item : newFunding.item;
+		newFunding.price = price ? price : newFunding.price;
+		newFunding.deadline = deadline ? deadline : newFunding.deadline;
+		newFunding.image = image ? image : newFunding.image;
 
 		await newFunding.save();
-		
+
 		console.log('펀딩 수정');
-		res.status(201).json(newFunding);
+		res.status(201).json({ message: '펀딩 수정' });
 	} catch (err) {
 		console.error('펀딩 수정 실패:', err);
 		res.status(500).json({ error: '펀딩 수정 실패' });
 	}
 }
-*/
 
 // 특정 펀딩 삭제
 async function deleteFunding(req, res) {
@@ -124,15 +130,15 @@ async function deleteFunding(req, res) {
 		const findFunding = await funding.findOne({
 			where: { id: id },
 		});
-		
+
 		// 펀딩 게시글이 존재하지 않는 경우 처리
 		if (!findFunding) {
 			console.log('펀딩 미존재');
 			return res.status(404).json({ error: '존재하지 않는 펀딩입니다.' });
 		}
-		
+
 		await findFunding.destroy();
-		
+
 		console.log('펀딩 삭제');
 		res.status(200).json({ message: '펀딩 삭제' });
 	} catch (err) {
@@ -141,8 +147,8 @@ async function deleteFunding(req, res) {
 	}
 }
 
-
 exports.createFunding = (req, res, next) => createFunding(req, res);
 exports.viewListFunding = (req, res, next) => viewListFunding(req, res);
 exports.viewFunding = (req, res, next) => viewFunding(req, res);
+exports.updateFunding = (req, res, next) => updateFunding(req, res);
 exports.deleteFunding = (req, res, next) => deleteFunding(req, res);
