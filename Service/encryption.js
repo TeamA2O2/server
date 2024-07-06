@@ -13,7 +13,6 @@ const createHashedPassword = async (password) => {
     const salt = await createSalt();
     const key = await pbkdf2Promise(password, salt, 13191, 64, 'sha512');
     const hashedPassword = key.toString('base64');
-    console.log('321321');
 
     return { hashedPassword, salt };
 };

@@ -44,8 +44,11 @@ router.get('/checkDuplicatedId/:id', userController.checkDuplicatedId);
  *          description: "로그인 정보 입력"
  *          required: true
  *          schema:
- *              type: object
- *              properties:
+ *            type: object
+ *            properties:
+ *              data:
+ *                type: object
+ *                properties:
  *                  id:
  *                      type: string
  *                      example: 'testid'
@@ -80,24 +83,27 @@ router.post('/signIn', userController.signIn);
  *          schema:
  *              type: object
  *              properties:
- *                  id:
- *                      type: string
- *                      example: 'testid'
- *                  password:
- *                      type: string
- *                      example: 'testpassword'
- *                  email:
- *                      type: string
- *                      example: 'test@test.com'
- *                  phone:
- *                      type: string
- *                      example: '010-1234-5678'
- *                  name:
- *                      type: string
- *                      example: '김테스트'
- *                  image:
- *                      type: string
- *                      example: '아직 구현중.. 되면 업데이트함'
+ *                data:
+ *                  type: object
+ *                  properties:
+ *                      id:
+ *                        type: string
+ *                        example: 'testid'
+ *                      password:
+ *                        type: string
+ *                        example: 'testpassword'
+ *                      email:
+ *                        type: string
+ *                        example: 'test@test.com'
+ *                      phone:
+ *                        type: string
+ *                        example: '010-1234-5678'
+ *                      name:
+ *                        type: string
+ *                        example: '김테스트'
+ *                      image:
+ *                        type: string
+ *                        example: '아직 구현중.. 되면 업데이트함'
  *      responses:
  *        201:
  *          description: 회원가입 성공
@@ -107,5 +113,52 @@ router.post('/signIn', userController.signIn);
  *          description: 회원가입 중 오류
  */
 router.post('/signUp', userController.signUp);
+
+/**
+ * @swagger
+ *  /user/editUser:
+ *    post:
+ *      tags: [유저]
+ *      summary: 유저 정보 수정 API
+ *      produces:
+ *      - application/json
+ *      parameters:
+ *        - in: "body"
+ *          name: "body"
+ *          description: "수정된 유저 정보 입력"
+ *          required: true
+ *          schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  type: object
+ *                  properties:
+ *                      id:
+ *                        type: string
+ *                        example: 'testid'
+ *                      password:
+ *                        type: string
+ *                        example: 'testpassword'
+ *                      email:
+ *                        type: string
+ *                        example: 'test@test.com'
+ *                      phone:
+ *                        type: string
+ *                        example: '010-1234-5678'
+ *                      name:
+ *                        type: string
+ *                        example: '김테스트'
+ *                      image:
+ *                        type: string
+ *                        example: '아직 구현중.. 되면 업데이트함'
+ *      responses:
+ *        200:
+ *          description: 회원가입 성공
+ *        404:
+ *          description: 존재하지 않는 아이디
+ *        500:
+ *          description: 회원가입 중 오류
+ */
+router.post('/editUser', userController.editUser);
 
 module.exports = router;
