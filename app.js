@@ -62,7 +62,6 @@ app.use('/funding', require('./Router/fundingRouter.js'));
 
 app.get('/', (req, res) => {
  	res.send('하이');
-	res.send(port);
 });
 
 

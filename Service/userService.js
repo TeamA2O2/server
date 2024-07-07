@@ -76,16 +76,7 @@ async function signIn(req, res) {
         const result = await verifyPassword(password, findId.salt, findId.password);
         if (!result) {
             console.log('비밀번호 불일치');
-            return res.status(401).json({ 
-                message: '비밀번호가 일치하지 않습니다', 
-                message: {
-                    id: findId.id,
-                    email: findId.email,
-                    phone: findId.phone,
-                    name: findId.name,
-                    image: findId.image
-                }
-            });
+            return res.status(401).json({ message: '비밀번호가 일치하지 않습니다' });
         }
         console.log('로그인 성공!');
         return res.status(200).json({ message: '로그인에 성공하였습니다!', userData: findId});
