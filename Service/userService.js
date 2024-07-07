@@ -117,7 +117,6 @@ async function editUser(req, res) {
             }
         });
 
-        console.log(result)
         if (result > 0) {
             console.log('유저 정보 수정 성공');
             return res.status(200).json({ message: '유저 정보 수정 성공' });
@@ -131,7 +130,84 @@ async function editUser(req, res) {
     }
 };
 
+async function findId(req, res) {
+    try {
+        const name = req.body.data.name;
+        const email = req.body.data.email;
+        const phone = req.body.data.phone ;
+
+        const findId = await user.findAll({
+            attributes: ['id'],
+            where: {
+                name: name,
+                email: email,
+                phone: phone
+            }
+        });
+        
+        if (findId.length <= 0) {
+            console.log('일치하는 유저가 없음');
+            return res.status(400).json({ message: '일치하는 유저가 없음' });
+        }
+        console.log('아이디 찾기 성공');
+        return res.status(200).json({ message: '아이디 찾기 성공', data: findId });
+    } catch(err) {
+        console.log('아이디 찾기 중 오류', err);
+        return res.status(500).json({ message: '아이디 찾기 중 오류' });
+    }
+};
+
+async function resetPassword(req, res) {
+    try {
+        const id = req.body.data.id;
+        const name = req.body.data.name;
+        const email = req.body.data.email;
+        const phone = req.body.data.phone;
+        const newPassword = req.body.data.newPassword;
+
+        const findId = await user.findOne({
+            where: {
+                id: id,
+                name: name,
+                email: email,
+                phone: phone,
+            }
+        });
+
+        if (!findId) {
+            console.log('일치하는 아이디가 없습니다.');
+            return res.status(404).json({ message: '일치하는 아이디가 없습니다.' });
+        }
+        
+        const { hashedPassword, salt } = await createHashedPassword(newPassword);
+
+        const result = await user.update({
+            password: hashedPassword,
+            salt: salt
+        }, {
+            where: {
+                id: findId.id
+            }
+        });
+        // 왜 업데이트 안 됨? 왜 업데이트 안 됨? 왜 업데이트 안 됨? 왜 업데이트 안 됨? 왜 업데이트 안 됨? 왜 업데이트 안 됨?
+        console.log(result);
+        if (result <= 0) {
+            console.log('비밀번호 업데이트 실패');
+            return res.status(400).json({ message: '비밀번호 업데이트 실패' });
+        }
+        
+        console.log('비밀번호 업데이트 성공');
+        return res.status(200).json({ message: '비밀번호 업데이트 성공' });
+
+    } catch(err) {
+        console.log('비밀번호 업데이트 중 오류 발생', err);
+        return res.status(500).json({ message: '비밀번호 업데이트 중 오류 발생' });
+    }
+}
+
 exports.checkDuplicatedId = (req, res, next) => checkDuplicatedId(req, res);
 exports.signIn = (req, res, next) => signIn(req, res);
 exports.signUp = (req, res, next) => signUp(req, res);
 exports.editUser = (req, res, next) => editUser(req, res);
+exports.findId = (req, res, next) => findId(req, res);
+exports.resetPassword = (req, res, next) => resetPassword(req, res);

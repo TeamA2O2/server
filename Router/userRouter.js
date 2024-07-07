@@ -161,4 +161,8 @@ router.post('/signUp', userController.signUp);
  */
 router.post('/editUser', userController.editUser);
 
+router.post('/findId', userController.findId);
+
+router.post('/resetPassword', userController.resetPassword);
+
 module.exports = router;
