@@ -147,7 +147,7 @@ async function findId(req, res) {
         
         if (findId.length <= 0) {
             console.log('일치하는 유저가 없음');
-            return res.status(400).json({ message: '일치하는 유저가 없음' });
+            return res.status(404).json({ message: '일치하는 유저가 없음' });
         }
         console.log('아이디 찾기 성공');
         return res.status(200).json({ message: '아이디 찾기 성공', data: findId });
