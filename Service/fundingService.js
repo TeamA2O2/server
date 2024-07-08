@@ -55,12 +55,12 @@ async function viewListFunding(req, res) {
 
 // 특정 펀딩 조회
 async function viewFunding(req, res) {
-	const { id } = req.params; // 요청 파라미터에서 id 추출
+	const { id } = req.query; // 요청 쿼리에서 id 추출
 
 	try {
-		// 요청 파라미터에서 id가 없는 경우 처리
+		// 요청 쿼리에서 id가 없는 경우 처리
 		if (!id) {
-			return res.status(400).json({ error: 'request params에 id가 없습니다.' });
+			return res.status(400).json({ error: 'request query에 id가 없습니다.' });
 		}
 
 		const findFunding = await funding.findAll({
