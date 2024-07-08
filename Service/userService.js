@@ -25,24 +25,31 @@ async function checkDuplicatedId(req, res) {
 
 // 아이디로 유저 데이터 조회
 async function getUserData(req, res) {
-    const id = req.params.id;
+    try {    
+        const id = req.params.id;
 
-    const result = await user.findOne({
-        where: { id: id }
-    });
-
-    if (result) {
-        console.log('아이디 찾음');
-        return res.status(200).json({
-            message: "아이디 찾음",
-            data: {
-                id: result.id,
-                phone: result.phone,
-                email: result.email,
-                name: result.name,
-                image: `${req.protocol}://${req.get('host')}/userImages/${result.image}`
-            }
+        const result = await user.findOne({
+            where: { id: id }
         });
+
+        if (result) {
+            console.log('아이디 찾음');
+            return res.status(200).json({
+                message: "아이디 찾음",
+                data: {
+                    id: result.id,
+                    phone: result.phone,
+                    email: result.email,
+                    name: result.name,
+                    image: `${req.protocol}://${req.get('host')}/userImages/${result.image}`
+                }
+            });
+        }
+        console.log('존재하지 않는 아이디');
+        return res.status(404).json({ message: '존재하지 않는 아이디' });
+    } catch(err) {
+        console.log('유저 정보 조회 중 오류');
+        return res.status(500).json({ message: '유저 정보 조회중 오류' });
     }
 }
 
