@@ -5,6 +5,8 @@ const funding = require('../Model/funding');
 async function createFunding(req, res) {
 	try {
 		const { title, item, price, deadline, image, userId } = req.body.data;
+	
+		
 		console.log('Received request body:', req.body);
 		// Check if all required fields are present
 		if (!title || !item || !price || !deadline || !userId) {
