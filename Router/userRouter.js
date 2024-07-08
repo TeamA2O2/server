@@ -32,6 +32,72 @@ router.get('/checkDuplicatedId/:id', userController.checkDuplicatedId);
 
 /**
  * @swagger
+ * /user/getUserData/{id}:
+ *   get:
+ *     tags: [유저]
+ *     summary: 유저 데이터 조회
+ *     description: 주어진 아이디로 유저의 데이터를 조회합니다.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 조회할 유저의 아이디
+ *     responses:
+ *       200:
+ *         description: 유저 데이터를 성공적으로 조회하였습니다.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 아이디 찾음
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: testid
+ *                     phone:
+ *                       type: string
+ *                       example: "010-1234-5678"
+ *                     email:
+ *                       type: string
+ *                       example: "user@example.com"
+ *                     name:
+ *                       type: string
+ *                       example: "홍길동"
+ *                     image:
+ *                       type: string
+ *                       example: "https://ao-rztme.run.goorm.site/userImages/54976dc1-7aa4-4621-b0a2-6552bda0b4c4.jpg"
+ *       404:
+ *         description: 유저를 찾을 수 없습니다.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 존재하지 않는 아이디
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 유저 정보 조회 중 오류
+ */
+router.get('/getUserData/:id', userController.getUserData);
+
+/**
+ * @swagger
  *  /user/signIn:
  *    post:
  *      tags: [유저]

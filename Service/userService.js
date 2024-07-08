@@ -5,7 +5,6 @@ const { createHashedPassword, verifyPassword } = require('./encryption');
 // 아이디 중복확인
 async function checkDuplicatedId(req, res) {
     try {const id = req.params.id;
-        console.log(id);
 
         const result = await user.findOne({
             where: { id: id }
@@ -21,6 +20,36 @@ async function checkDuplicatedId(req, res) {
     } catch (err) {
         console.log('아이디 중복확인 중 오류 발생', err);
         return res.status(500).json({ message: '아이디 중복확인 중 오류 발생' })
+    }
+}
+
+// 아이디로 유저 데이터 조회
+async function getUserData(req, res) {
+    try {    
+        const id = req.params.id;
+
+        const result = await user.findOne({
+            where: { id: id }
+        });
+
+        if (result) {
+            console.log('아이디 찾음');
+            return res.status(200).json({
+                message: "아이디 찾음",
+                data: {
+                    id: result.id,
+                    phone: result.phone,
+                    email: result.email,
+                    name: result.name,
+                    image: `${req.protocol}://${req.get('host')}/userImages/${result.image}`
+                }
+            });
+        }
+        console.log('존재하지 않는 아이디');
+        return res.status(404).json({ message: '존재하지 않는 아이디' });
+    } catch(err) {
+        console.log('유저 정보 조회 중 오류');
+        return res.status(500).json({ message: '유저 정보 조회중 오류' });
     }
 }
 
@@ -47,7 +76,7 @@ async function signIn(req, res) {
             });
         }
         console.log('로그인 성공!');
-        return res.status(200).json({ message: '로그인에 성공하였습니다!', userData: findId});
+        return res.status(200).json({ message: '로그인에 성공하였습니다!', userId: findId.id});
 
     } catch(err) {
         console.log('로그인 중 오류 발생', err);
@@ -91,7 +120,13 @@ async function signUp(req, res) {
 
 async function editUser(req, res) {
     try {
-        const { id, password, email, phone, name, image } = req.body.data;
+        const { id, password, email, phone, name } = JSON.parse(req.body.data);
+        var image_name = null;
+
+        // 사진도 있으면?
+        if (req.file) {
+            image_name = req.file.filename;
+        }
         
         const findId = await user.findOne({
             where: {
@@ -109,7 +144,7 @@ async function editUser(req, res) {
             email: email,
             phone: phone,
             name: name,
-            image: image,
+            image: image_name,
             salt: salt
         }, {
             where: {
@@ -205,9 +240,12 @@ async function resetPassword(req, res) {
     }
 }
 
+
 exports.checkDuplicatedId = (req, res, next) => checkDuplicatedId(req, res);
+exports.getUserData = (req, res, next) => getUserData(req, res);
 exports.signIn = (req, res, next) => signIn(req, res);
 exports.signUp = (req, res, next) => signUp(req, res);
 exports.editUser = (req, res, next) => editUser(req, res);
 exports.findId = (req, res, next) => findId(req, res);
 exports.resetPassword = (req, res, next) => resetPassword(req, res);
+exports.uploadImage = (req, res, next) => uploadImage(req, res);
