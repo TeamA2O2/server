@@ -91,7 +91,7 @@ async function signIn(req, res) {
 // 회원가입
 async function signUp(req, res) {
     try {
-        const { id, password, email, phone, name, image } = req.body.data;
+        const { id, password, email, phone, name } = req.body.data;
 
         const findId = await user.findOne({
             where: { id: id }
@@ -122,9 +122,10 @@ async function signUp(req, res) {
     }
 };
 
+// 유저 정보 수정
 async function editUser(req, res) {
     try {
-        const { id, password, email, phone, name } = JSON.parse(req.body.data);
+        var { id, password, email, phone, name } = JSON.parse(req.body.data);
         var image_name = null;
 
         // 사진도 있으면?
