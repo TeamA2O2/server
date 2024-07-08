@@ -13,14 +13,16 @@
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.10.1",
     "nodemon": "^3.1.4",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
     "swagger": "^0.7.5",
-	"swagger-jsdoc": "^6.2.8",
-	"swagger-ui-express": "^5.0.1"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid4": "^2.0.3"
   },
   "devDependencies": {
     "swagger-jsdoc": "^6.2.8",

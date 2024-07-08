@@ -1,11 +1,10 @@
 // express 가져오기
 const express = require('express');
+const app = express();
 var swaggerJsdoc = require("swagger-jsdoc");
 var swaggerUi = require("swagger-ui-express");
-//const api = require("./routers")
-const app = express();
 const cors = require('cors');
-
+const multerMiddleware = require('./multer/multer.js');
 
 const options = {
   definition: {
@@ -32,6 +31,7 @@ const options = {
 const router = express.Router();
 
 app.use(express.json());
+app.use(multerMiddleware); 
 require('dotenv').config();
 const port = process.env.PORT;
 
@@ -43,11 +43,9 @@ app.use('/user', require('./Router/userRouter.js'));
 app.use('/funding', require('./Router/fundingRouter.js'));
 
 
-
 app.get('/', (req, res) => {
  	res.send('하이');
 });
 
 
 app.listen(port, () => { console.log('Server is running on port', port); });
-//console.log('\x1b[3m%s');

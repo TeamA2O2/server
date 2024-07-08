@@ -91,7 +91,14 @@ async function signUp(req, res) {
 
 async function editUser(req, res) {
     try {
-        const { id, password, email, phone, name, image } = req.body.data;
+        console.log(req.body);
+        const { id, password, email, phone, name } = JSON.parse(req.body.data);
+        var image_name = null;
+
+        // 사진도 있으면?
+        if (req.file) {
+            image_name = req.file.filename;
+        }
         
         const findId = await user.findOne({
             where: {
@@ -109,7 +116,7 @@ async function editUser(req, res) {
             email: email,
             phone: phone,
             name: name,
-            image: image,
+            image: image_name,
             salt: salt
         }, {
             where: {
@@ -211,3 +218,4 @@ exports.signUp = (req, res, next) => signUp(req, res);
 exports.editUser = (req, res, next) => editUser(req, res);
 exports.findId = (req, res, next) => findId(req, res);
 exports.resetPassword = (req, res, next) => resetPassword(req, res);
+exports.uploadImage = (req, res, next) => uploadImage(req, res);
