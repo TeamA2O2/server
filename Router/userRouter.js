@@ -30,6 +30,8 @@ const userController = require('../Service/userService.js');
  */
 router.get('/checkDuplicatedId/:id', userController.checkDuplicatedId);
 
+router.get('/getUserData/:id', userController.getUserData);
+
 /**
  * @swagger
  *  /user/signIn:

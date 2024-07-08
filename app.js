@@ -4,6 +4,7 @@ const app = express();
 var swaggerJsdoc = require("swagger-jsdoc");
 var swaggerUi = require("swagger-ui-express");
 const cors = require('cors');
+const path = require('path');
 const multerMiddleware = require('./multer/multer.js');
 
 const options = {
@@ -32,6 +33,7 @@ const router = express.Router();
 
 app.use(express.json());
 app.use(multerMiddleware); 
+app.use('/userImages', express.static(path.join(__dirname, 'images')));
 require('dotenv').config();
 const port = process.env.PORT;
 
