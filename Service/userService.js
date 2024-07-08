@@ -31,6 +31,10 @@ async function getUserData(req, res) {
         const result = await user.findOne({
             where: { id: id }
         });
+		var imageURL = null;
+		if (result.image) {
+			imageURL = `${req.protocol}://${req.get('host')}/userImages/${result.image}`;
+		}
 
         if (result) {
             console.log('아이디 찾음');
@@ -41,7 +45,7 @@ async function getUserData(req, res) {
                     phone: result.phone,
                     email: result.email,
                     name: result.name,
-                    image: `${req.protocol}://${req.get('host')}/userImages/${result.image}`
+                    image: imageURL
                 }
             });
         }

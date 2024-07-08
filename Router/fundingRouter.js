@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const fileUpload = require('../middleware/fileupload');
 const fundingController = require('../Service/fundingService.js');
 
 router.get('/', (req, res, next) => {
