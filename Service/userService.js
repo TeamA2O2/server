@@ -168,16 +168,12 @@ async function editUser(req, res) {
 
 async function findId(req, res) {
     try {
-        const name = req.body.data.name;
         const email = req.body.data.email;
-        const phone = req.body.data.phone ;
 
         const findId = await user.findAll({
             attributes: ['id'],
             where: {
-                name: name,
                 email: email,
-                phone: phone
             }
         });
         
