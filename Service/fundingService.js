@@ -4,24 +4,30 @@ const funding = require('../Model/funding');
 // 펀딩 생성
 async function createFunding(req, res) {
 	try {
-		const { title, item, price, deadline, image, userId } = req.body.data;
-	
-		
+		const { title, item, price, deadline, userId } = JSON.parse(req.body.data);
+		var image_name = null;
+
 		console.log('Received request body:', req.body);
 		// Check if all required fields are present
 		if (!title || !item || !price || !deadline || !userId) {
-			return res.status(400).json({ 
-				error: 'title:', title
+			return res.status(400).json({
+				error: 'title:',
+				title,
 			});
 		}
-		
+
+		// 사진 업로드시
+		if (req.file) {
+			image_name = req.file.filename;
+		}
+
 		const newFunding = await funding.create({
 			title,
 			item,
 			price,
 			money: 0, // 초기값으로 0 설정
 			deadline,
-			image,
+			image: image_name,
 			userId,
 		});
 
@@ -72,7 +78,7 @@ async function viewFunding(req, res) {
 			return res.status(400).json({ error: 'request query에 id가 없습니다.' });
 		}
 
-		const findFunding = await funding.findAll({
+		const findFunding = await funding.findOne({
 			where: { id: id },
 		});
 
@@ -80,6 +86,11 @@ async function viewFunding(req, res) {
 		if (findFunding.length === 0) {
 			console.log('펀딩 미존재');
 			return res.status(404).json({ error: '존재하지 않는 펀딩입니다.' });
+		}
+
+		if (findFunding.image) {
+			console.log('이미지 존재');
+			findFunding.image = 'https://ao-rztme.run.goorm.site/userImages/' + findFunding.image;
 		}
 
 		console.log('펀딩 조회');
@@ -93,13 +104,19 @@ async function viewFunding(req, res) {
 // 특정 펀딩 수정
 async function updateFunding(req, res) {
 	try {
-		const { id, title, item, price, deadline, image } = req.body.data;
+		const { id, title, item, price, deadline } = JSON.parse(req.body.data);
+		var image_name = null;
 
 		// 요청 바디에서 id가 없는 경우 처리
 		if (!id) {
 			return res.status(400).json({ error: 'request body에 id가 없습니다.' });
 		}
-		
+
+		// 사진 업로드시
+		if (req.file) {
+			image_name = req.file.filename;
+		}
+
 		const newFunding = await funding.findOne({
 			where: { id: id },
 		});
@@ -114,7 +131,7 @@ async function updateFunding(req, res) {
 		newFunding.item = item ? item : newFunding.item;
 		newFunding.price = price ? price : newFunding.price;
 		newFunding.deadline = deadline ? deadline : newFunding.deadline;
-		newFunding.image = image ? image : newFunding.image;
+		newFunding.image = image_name ? image_name : newFunding.image;
 
 		await newFunding.save();
 
@@ -165,12 +182,12 @@ async function participateFunding(req, res) {
 		if (!id) {
 			return res.status(400).json({ error: 'request body에 id가 없습니다.' });
 		}
-		
+
 		// 요청 바디에서 id가 없는 경우 처리
 		if (!price) {
 			return res.status(400).json({ error: 'request body에 price가 없습니다.' });
 		}
-		
+
 		const newFunding = await funding.findOne({
 			where: { id: id },
 		});
