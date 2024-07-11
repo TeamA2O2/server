@@ -33,7 +33,7 @@ const router = express.Router();
 
 app.use(express.json());
 app.use(multerMiddleware); 
-app.use('/userImages', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 require('dotenv').config();
 const port = process.env.PORT;
 

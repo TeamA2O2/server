@@ -190,6 +190,39 @@ router.post('/update', fundingController.updateFunding);
  */
 router.post('/delete', fundingController.deleteFunding);
 
+/**
+ * @swagger
+ *  /funding/delete:
+ *    post:
+ *      tags: [펀딩]
+ *      summary: 펀딩 참여 API
+ *      requestBody:
+ *        description: "펀딩 참여 입력"
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  type: object
+ *                  properties:
+ *                    id:
+ *                      type: number
+ *                      example: 17
+ *                    price:
+ *                      type: number
+ *                      example: 170000
+ *      responses:
+ *        200:
+ *          description: 펀딩 참여 성공
+ *        400:
+ *          description: 요청 바디에서 필수 필드인 id 또는 price가 없는 경우
+ *        404:
+ *          description: 해당 펀딩이 존재하지 않는 경우
+ *        500:
+ *          description: 펀딩 참여 실패
+ */
 router.post('/participate', fundingController.participateFunding);
 
 module.exports = router;

@@ -90,7 +90,7 @@ async function viewFunding(req, res) {
 
 		if (findFunding.image) {
 			console.log('이미지 존재');
-			findFunding.image = 'https://ao-rztme.run.goorm.site/userImages/' + findFunding.image;
+			findFunding.image = 'https://ao-rztme.run.goorm.site/images/' + findFunding.image;
 		}
 
 		console.log('펀딩 조회');
@@ -198,7 +198,7 @@ async function participateFunding(req, res) {
 		}
 
 		// 펀딩 정보 업데이트
-		newFunding.price += price;
+		newFunding.money += price;
 
 		await newFunding.save();
 

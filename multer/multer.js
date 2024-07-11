@@ -16,6 +16,6 @@ const upload = multer({
       },
     }),
   });
-  const multerMiddleware = upload.single('profileImage');
+  const multerMiddleware = upload.single('image');
 
 module.exports = multerMiddleware;
