@@ -225,4 +225,16 @@ router.post('/delete', fundingController.deleteFunding);
  */
 router.post('/participate', fundingController.participateFunding);
 
+/**
+ * @swagger
+ *  /funding/listItem:
+ *    get:
+ *      tags: [펀딩]
+ *      summary: 상품 리스트 조회 API
+ *      responses:
+ *        200:
+ *          description: 상품 리스트
+ */
+router.get('/listItem', fundingController.listItem);
+
 module.exports = router;

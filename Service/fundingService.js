@@ -4,10 +4,11 @@ const funding = require('../Model/funding');
 // 펀딩 생성
 async function createFunding(req, res) {
 	try {
-		const { title, item, price, deadline, userId } = JSON.parse(req.body.data);
+		console.log(req.body, req.file);
+		const { title, item, price, deadline, userId} = req.body;
 		var image_name = null;
-
-		console.log('Received request body:', req.body);
+		
+		//console.log('Received request body:', req.body);
 		// Check if all required fields are present
 		if (!title || !item || !price || !deadline || !userId) {
 			return res.status(400).json({
@@ -104,7 +105,9 @@ async function viewFunding(req, res) {
 // 특정 펀딩 수정
 async function updateFunding(req, res) {
 	try {
-		const { id, title, item, price, deadline } = JSON.parse(req.body.data);
+
+		//console.log(req.body, req.file);
+		const { id, title, item, price, deadline} = req.body;
 		var image_name = null;
 
 		// 요청 바디에서 id가 없는 경우 처리
@@ -116,7 +119,7 @@ async function updateFunding(req, res) {
 		if (req.file) {
 			image_name = req.file.filename;
 		}
-
+		
 		const newFunding = await funding.findOne({
 			where: { id: id },
 		});
@@ -125,13 +128,14 @@ async function updateFunding(req, res) {
 			console.log('펀딩 미존재');
 			return res.status(404).json({ error: '존재하지 않는 펀딩입니다.' });
 		}
-
+	
 		// 펀딩 정보 업데이트
 		newFunding.title = title ? title : newFunding.title;
 		newFunding.item = item ? item : newFunding.item;
 		newFunding.price = price ? price : newFunding.price;
 		newFunding.deadline = deadline ? deadline : newFunding.deadline;
 		newFunding.image = image_name ? image_name : newFunding.image;
+
 
 		await newFunding.save();
 
@@ -177,7 +181,7 @@ async function deleteFunding(req, res) {
 async function participateFunding(req, res) {
 	try {
 		const { id, price } = req.body.data;
-
+		
 		// 요청 바디에서 id가 없는 경우 처리
 		if (!id) {
 			return res.status(400).json({ error: 'request body에 id가 없습니다.' });
@@ -198,7 +202,7 @@ async function participateFunding(req, res) {
 		}
 
 		// 펀딩 정보 업데이트
-		newFunding.money += price;
+		newFunding.money += parseFloat(price);
 
 		await newFunding.save();
 
@@ -210,9 +214,33 @@ async function participateFunding(req, res) {
 	}
 }
 
+
+// 상품 리스트 조회
+async function listItem(req, res) {
+
+	const listItem = await [
+		"[대전] 대전 마그넷 자석",
+		"[대전] 꿈돌이 대형 인형",
+		"[대전] 옻산 옻칠 포크세트",
+		"[대전] 명문유통 칫솔살균기",
+		"[대전] 다미공방 밀리오피레 칠보반지",
+		"[대전] 태양은방 금 꽃반지",
+		"[부산] 아네스 LED 무드등",
+		"[부산] 허니스푼 스윙허니 350g 더블세트",
+		"[부산] 깐깐한여니씨 깐깐한여니씨의 쌍화차",
+		"[부산] 조내기고구마 조내기고구마여주환",
+		"[부산] 해승J&T 대나무 티텀블러"
+	];
+	
+	console.log('상품 리스트 조회');
+	res.status(200).json(listItem);
+}
+
+
 exports.createFunding = (req, res, next) => createFunding(req, res);
 exports.viewListFunding = (req, res, next) => viewListFunding(req, res);
 exports.viewFunding = (req, res, next) => viewFunding(req, res);
 exports.updateFunding = (req, res, next) => updateFunding(req, res);
 exports.deleteFunding = (req, res, next) => deleteFunding(req, res);
 exports.participateFunding = (req, res, next) => participateFunding(req, res);
+exports.listItem = (req, res, next) => listItem(req, res);
