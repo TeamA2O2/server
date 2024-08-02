@@ -110,7 +110,6 @@ async function signUp(req, res) {
             email: email,
             phone: phone,
             name: name,
-            image: image,
             salt: salt,
         });
         console.log('회원가입 성공!');

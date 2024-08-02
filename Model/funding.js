@@ -30,7 +30,7 @@ const funding = sequelize.define('funding', {
 		allowNull: false,
 	},
 	image: {
-		type: Sequelize.STRING,
+		type: Sequelize.STRING(500),
 		allowNull: true,
 	},
 	userId: {

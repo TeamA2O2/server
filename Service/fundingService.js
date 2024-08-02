@@ -52,7 +52,7 @@ async function viewListFunding(req, res) {
 
 		const findList = await funding.findAll({
 			where: { userId: userId },
-			attributes: ['id', 'title', 'item', 'money', 'price'], // 필요한 속성만 선택
+			attributes: ['id', 'title', 'item', 'money', 'price', 'image'], // 필요한 속성만 선택
 		});
 
 		// 펀딩 게시글이 존재하지 않는 경우 처리
@@ -233,7 +233,7 @@ async function listItem(req, res) {
 	];
 	
 	console.log('상품 리스트 조회');
-	res.status(200).json(listItem);
+	res.status(200).json({data: {listItem}});
 }
 
 
